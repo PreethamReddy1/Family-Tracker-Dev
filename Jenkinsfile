@@ -1,22 +1,42 @@
+
 pipeline {
     agent any
 
     stages {
-        stage('test') {
+        stage('Checkout') {
             steps {
-                echo "testing is done"
+                checkout scm
             }
         }
 
-        stage('build') {
+        stage('Test') {
             steps {
-                echo "building is done"
+                echo "Testing is done"
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo "Building is done"
             }
         }
 
         stage('Docker Build') {
             steps {
                 sh 'docker build -t family-tracker .'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh '''
+                    docker rm -f travel-app || true
+                    docker run -d \
+                        --name travel-app \
+                        --network travel-network \
+                        -p 3001:3000 \
+                        family-tracker
+                '''
             }
         }
     }
