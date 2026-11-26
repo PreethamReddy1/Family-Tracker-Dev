@@ -1,14 +1,13 @@
 import express from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
-
 const app = express();
 const port = 3000;
 
 const db = new pg.Client({
   user: "postgres",
   host: "travel-db",
-  database: "travel_tracker",
+  database: "family-tracker",
   password: "admin123",
   port: 5432,
 });
